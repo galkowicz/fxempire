@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Tab } from 'semantic-ui-react';
-import { BASE_URL, TIME_STAMP_LIST } from './constants';
+import { TIME_STAMP_LIST } from './constants';
 import Chart from './components/chart';
+import { getAppData } from './apService';
 
 
 class App extends Component {
@@ -20,7 +21,7 @@ class App extends Component {
 	componentDidMount() {
 		const params = `?time=${TIME_STAMP_LIST[this.state.activeIndex]}`;
 
-		this.getAppData(params);
+		this.fetchData(params);
 	}
 
 	render() {
@@ -39,7 +40,7 @@ class App extends Component {
 	handleTabChange(e, data) {
 		this.setState({ activeIndex: data.activeIndex }, () => {
 			const params = `?time=${TIME_STAMP_LIST[this.state.activeIndex]}`;
-			this.getAppData(params);
+			this.fetchData(params);
 		});
 	}
 
@@ -47,9 +48,10 @@ class App extends Component {
 		return <Tab.Pane><Chart data={items}/></Tab.Pane>;
 	}
 
-	getAppData(params) {
+	fetchData(params) {
 		this.setState({ isLoaded: false });
-		fetch(`${BASE_URL}${params}`)
+
+		getAppData(params)
 			.then(res => res.json())
 			.then((result) => {
 					this.setState({

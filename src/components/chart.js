@@ -19,7 +19,7 @@ export default class Chart extends PureComponent {
 				<YAxis domain={[ 1.12, 1.13 ]}/>
 				<Tooltip content={<CustomTooltip active={true}/>}/>
 				<Legend/>
-				<Line type='monotone' dataKey='close' stroke='#8884d8' activeDot={{ r: 8 }}/>
+				<Line type='monotone' dataKey='close' stroke='#8884d8'/>
 				<Line type='monotone' dataKey='open' stroke='#82ca9d'/>
 			</LineChart>
 		);
@@ -43,10 +43,13 @@ export default class Chart extends PureComponent {
 
 const CustomTooltip = ({ active, payload }) => {
 	if (active) {
+		const high = payload[0] && payload[0].payload && payload[0].payload.high;
+		const low = payload[0] && payload[0].payload && payload[0].payload.low;
+
 		return (
 			<div className="custom-tooltip">
-				<p>high: {payload[0].payload.high}</p>
-				<p>low: {payload[0].payload.low}</p>
+				<p>high: {high}</p>
+				<p>low: {low}</p>
 			</div>
 		);
 	}
